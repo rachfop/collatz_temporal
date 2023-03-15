@@ -2,17 +2,19 @@ import asyncio
 
 from temporalio.client import Client
 
-from your_workflows import YourWorkflow
+from your_workflows import CollatzWorkflow
 
 
 async def main():
     client = await Client.connect("localhost:7233")
+    number = int(input("Choose any integer greater than 1: "))
 
-    result = await client.execute_workflow(
-        YourWorkflow.run, "my name", id="my-workflow-id", task_queue="my-task-queue"
+    await client.execute_workflow(
+        CollatzWorkflow.run,
+        args=(number,),
+        id="collatz-wf",
+        task_queue="collatz-task-queue",
     )
-
-    print(f"Result: {result}")
 
 
 if __name__ == "__main__":
